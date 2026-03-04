@@ -1,5 +1,10 @@
 # Proje_Q - JCL Veri Yönetim Sistemi
 
+![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)
+![Status](https://img.shields.io/badge/status-development-yellow.svg)
+![Python](https://img.shields.io/badge/python-3.8+-green.svg)
+![License](https://img.shields.io/badge/license-private-red.svg)
+
 ## 📋 Proje Özeti
 Excel ve TXT dosyalarından JCL verilerini okuyup SQLite veritabanına kaydeden, yöneten ve raporlayan masaüstü uygulaması.
 
@@ -103,6 +108,8 @@ Proje_Q/
 │
 ├── requirements.txt               # Python bağımlılıkları
 ├── .gitignore                     # Git ignore dosyası
+├── CHANGELOG.md                   # Versiyon değişiklikleri
+├── VERSION                        # Mevcut versiyon
 └── README.md                      # Bu dosya
 ```
 
@@ -195,25 +202,25 @@ Proje_Q/
 
 ## 🎯 Geliştirme Yol Haritası
 
-### Faz 1: Temel Altyapı ✅ (Mevcut)
+### Faz 1: Temel Altyapı ✅ (Tamamlandı - v0.1.0)
 - [x] Git repository kurulumu
 - [x] Klasör yapısı oluşturma
-- [ ] Dokümantasyon yazma
-- [ ] Temel proje yapısı
+- [x] Dokümantasyon yazma
+- [x] Semantic Versioning sistemi
 
-### Faz 2: Veritabanı Katmanı
+### Faz 2: Veritabanı Katmanı (v0.2.0)
 - [ ] SQLite veritabanı şeması
 - [ ] CRUD operasyonları
 - [ ] Backup/restore fonksiyonları
 - [ ] Veri validasyonu
 
-### Faz 3: Veri Okuma Modülü
+### Faz 3: Veri Okuma Modülü (v0.3.0)
 - [ ] Excel okuma (openpyxl)
 - [ ] TXT okuma
 - [ ] Kolon algılama algoritması
 - [ ] Format validasyonu
 
-### Faz 4: GUI Geliştirme
+### Faz 4: GUI Geliştirme (v0.4.0)
 - [ ] Ana pencere (PyQt5)
 - [ ] Dosya yükleme arayüzü
 - [ ] Veritabanı yönetim ekranı
@@ -221,19 +228,19 @@ Proje_Q/
 - [ ] Tema sistemi implementasyonu
 - [ ] Log görüntüleme ekranı
 
-### Faz 5: Raporlama
+### Faz 5: Raporlama (v0.5.0)
 - [ ] Tablo görünümü
 - [ ] Excel export
 - [ ] PDF oluşturma
 - [ ] Filtreleme/arama
 
-### Faz 6: Test ve Optimizasyon
+### Faz 6: Test ve Optimizasyon (v0.6.0)
 - [ ] Unit testler
 - [ ] Integration testler
 - [ ] Performans optimizasyonu
 - [ ] Kullanıcı testleri
 
-### Faz 7: Deployment
+### Faz 7: Deployment (v1.0.0)
 - [ ] PyInstaller konfigürasyonu
 - [ ] .exe oluşturma
 - [ ] Kurulum paketi
@@ -247,17 +254,38 @@ Proje_Q/
 - ✅ Proje gereksinimleri analizi
 - ✅ Teknik stack belirleme
 - ✅ Klasör yapısı tasarımı
+- ✅ Kapsamlı dokümantasyon (README, TECHNICAL_SPECS, DATABASE_SCHEMA)
+- ✅ Semantic Versioning sistemi (CHANGELOG.md, VERSION)
 
 ### Şu An Üzerinde Çalışılan
-- 🔄 Dokümantasyon oluşturma
-- 🔄 Detaylı teknik spesifikasyonlar
+- 🔄 Versiyon 0.1.0 tamamlandı
 
-### Sonraki Adımlar
-1. Kolon adları listesini al
-2. Veritabanı yapısını finalize et
-3. İlk modül: Veritabanı yöneticisi
-4. İkinci modül: Excel okuyucu
-5. Üçüncü modül: Temel GUI
+### Sonraki Adımlar (v0.2.0)
+1. Veritabanı yöneticisi modülü (src/database/db_manager.py)
+2. Veri modelleri (src/database/models.py)
+3. Temel CRUD operasyonları
+4. Unit testler
+
+## 📚 Dokümantasyon
+
+- **[CHANGELOG.md](CHANGELOG.md)** - Versiyon geçmişi ve değişiklikler
+- **[docs/TECHNICAL_SPECS.md](docs/TECHNICAL_SPECS.md)** - Teknik spesifikasyonlar
+- **[docs/DATABASE_SCHEMA.md](docs/DATABASE_SCHEMA.md)** - Veritabanı detayları
+- **[VERSION](VERSION)** - Mevcut versiyon numarası
+
+## 🔄 Versiyonlama
+
+Bu proje [Semantic Versioning 2.0.0](https://semver.org/lang/tr/) standartlarını takip eder.
+
+**Versiyon Formatı:** `MAJOR.MINOR.PATCH`
+
+- **MAJOR**: Geriye dönük uyumsuz API değişiklikleri
+- **MINOR**: Geriye dönük uyumlu yeni özellikler  
+- **PATCH**: Geriye dönük uyumlu bug düzeltmeleri
+
+**Mevcut Versiyon:** 0.1.0 (Development)
+
+Tüm değişiklikler için [CHANGELOG.md](CHANGELOG.md) dosyasına bakın.
 
 ## 📞 İletişim ve Destek
 
@@ -277,6 +305,6 @@ Bu proje özel kullanım içindir.
 
 ---
 
-**Son Güncelleme:** 05.03.2026
-**Versiyon:** 0.1.0-alpha
+**Son Güncelleme:** 05.03.2026  
+**Versiyon:** 0.1.0  
 **Durum:** Geliştirme Aşamasında
