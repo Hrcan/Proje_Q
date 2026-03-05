@@ -256,11 +256,15 @@ Proje_Q/
 - ✅ Klasör yapısı tasarımı
 - ✅ Kapsamlı dokümantasyon (README, TECHNICAL_SPECS, DATABASE_SCHEMA)
 - ✅ Semantic Versioning sistemi (CHANGELOG.md, VERSION)
+- ✅ **Otomatik kurulum sistemi (check_requirements.py, setup_environment.py)**
+- ✅ **Detaylı kurulum kılavuzu (INSTALLATION_GUIDE.md)**
+- ✅ **Geliştirme ortamı hazırlığı (venv, tüm paketler kuruldu)**
 
 ### Şu An Üzerinde Çalışılan
-- 🔄 Versiyon 0.1.0 tamamlandı
+- 🔄 Versiyon 0.2.0 tamamlandı
+- 🎯 Kod implementasyonuna hazır
 
-### Sonraki Adımlar (v0.2.0)
+### Sonraki Adımlar (v0.3.0)
 1. Veritabanı yöneticisi modülü (src/database/db_manager.py)
 2. Veri modelleri (src/database/models.py)
 3. Temel CRUD operasyonları
@@ -269,9 +273,34 @@ Proje_Q/
 ## 📚 Dokümantasyon
 
 - **[CHANGELOG.md](CHANGELOG.md)** - Versiyon geçmişi ve değişiklikler
+- **[INSTALLATION_GUIDE.md](INSTALLATION_GUIDE.md)** - 🆕 Detaylı kurulum kılavuzu
 - **[docs/TECHNICAL_SPECS.md](docs/TECHNICAL_SPECS.md)** - Teknik spesifikasyonlar
 - **[docs/DATABASE_SCHEMA.md](docs/DATABASE_SCHEMA.md)** - Veritabanı detayları
 - **[VERSION](VERSION)** - Mevcut versiyon numarası
+
+## 🚀 Kurulum
+
+### Hızlı Başlangıç
+
+```bash
+# 1. Repository'yi klonlayın
+git clone https://github.com/Hrcan/proje_q.git
+cd proje_q
+
+# 2. Sistem kontrolü
+python check_requirements.py
+
+# 3. Otomatik kurulum
+python setup_environment.py
+
+# 4. Virtual environment'ı aktive edin
+# Windows:
+activate_env.bat
+# Linux/macOS:
+./activate_env.sh
+```
+
+Detaylı kurulum için: [INSTALLATION_GUIDE.md](INSTALLATION_GUIDE.md)
 
 ## 🔄 Versiyonlama
 
@@ -283,7 +312,7 @@ Bu proje [Semantic Versioning 2.0.0](https://semver.org/lang/tr/) standartların
 - **MINOR**: Geriye dönük uyumlu yeni özellikler  
 - **PATCH**: Geriye dönük uyumlu bug düzeltmeleri
 
-**Mevcut Versiyon:** 0.1.0 (Development)
+**Mevcut Versiyon:** 0.2.0 (Development)
 
 Tüm değişiklikler için [CHANGELOG.md](CHANGELOG.md) dosyasına bakın.
 
@@ -306,5 +335,5 @@ Bu proje özel kullanım içindir.
 ---
 
 **Son Güncelleme:** 05.03.2026  
-**Versiyon:** 0.1.0  
-**Durum:** Geliştirme Aşamasında
+**Versiyon:** 0.2.0  
+**Durum:** Geliştirme Ortamı Hazır - Kod İmplementasyonuna Hazır
