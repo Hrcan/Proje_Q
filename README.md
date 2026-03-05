@@ -1,7 +1,7 @@
 # Proje_Q - JCL Veri Yönetim Sistemi
 
-![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)
-![Status](https://img.shields.io/badge/status-development-yellow.svg)
+![Version](https://img.shields.io/badge/version-0.3.0-blue.svg)
+![Status](https://img.shields.io/badge/status-functional_test-green.svg)
 ![Python](https://img.shields.io/badge/python-3.8+-green.svg)
 ![License](https://img.shields.io/badge/license-private-red.svg)
 
@@ -115,22 +115,42 @@ Proje_Q/
 
 ## 📊 Veritabanı Yapısı
 
-### Ana Tablo: jcl_kayitlari
+### Tablo 1: hatali_isler (11 Kolon)
 
 | Kolon Adı | Tip | Açıklama |
 |-----------|-----|----------|
 | id | INTEGER PRIMARY KEY | Otomatik artan ID |
-| jcl_adi | TEXT UNIQUE NOT NULL | JCL adı (örn: Hurcan123) |
-| ekip_adi | TEXT | Sorumlu ekip/ekip adı |
-| kolon_c | TEXT | C kolonundan okunan veri |
-| kolon_d | TEXT | D kolonundan okunan veri |
-| kolon_e | TEXT | E kolonundan okunan veri |
-| rapor_tipi | TEXT | HATALI_ISLER veya UZUN_ISLER |
+| jcl_adi | TEXT NOT NULL | JCL adı (örn: PKRBI330) |
+| ay | TEXT NOT NULL | Rapor ayı (YYYY-MM formatı) |
+| sheet_adi | TEXT NOT NULL | Excel sheet adı |
+| hatali_sayi_ay | INTEGER | Aylık hatalı çalışma sayısı |
+| son_hatali_tarih | DATE | Son hatalı çalışma tarihi |
+| hatali_sayi_yil | INTEGER | Yıllık toplam hatalı sayı |
+| sorumlu_ekip | TEXT | Sorumlu ekip adı |
 | yuklenme_tarihi | DATETIME | İlk yüklenme zamanı |
 | guncelleme_tarihi | DATETIME | Son güncelleme zamanı |
-| kaynak_dosya | TEXT | Kaynak dosya adı |
+| kaynak_dosya | TEXT | Kaynak Excel dosya adı |
 
-### Yardımcı Tablo: yukleme_gecmisi
+**Unique Constraint:** (jcl_adi, ay, sheet_adi) - Aynı JCL aynı ayda aynı sheet'te tek kayıt
+
+### Tablo 2: uzun_isler (10 Kolon)
+
+| Kolon Adı | Tip | Açıklama |
+|-----------|-----|----------|
+| id | INTEGER PRIMARY KEY | Otomatik artan ID |
+| jcl_adi | TEXT NOT NULL | JCL adı |
+| ay | TEXT NOT NULL | Rapor ayı (YYYY-MM formatı) |
+| sheet_adi | TEXT NOT NULL | Excel sheet adı |
+| calisma_sayisi | INTEGER | Toplam çalışma sayısı |
+| calisma_suresi | INTEGER | Toplam çalışma süresi (dakika) |
+| sorumlu_ekip | TEXT | Sorumlu ekip adı |
+| yuklenme_tarihi | DATETIME | İlk yüklenme zamanı |
+| guncelleme_tarihi | DATETIME | Son güncelleme zamanı |
+| kaynak_dosya | TEXT | Kaynak Excel dosya adı |
+
+**Unique Constraint:** (jcl_adi, ay, sheet_adi)
+
+### Tablo 3: yukleme_gecmisi
 
 | Kolon Adı | Tip | Açıklama |
 |-----------|-----|----------|
@@ -140,6 +160,12 @@ Proje_Q/
 | kayit_sayisi | INTEGER | Eklenen kayıt sayısı |
 | durum | TEXT | BASARILI / HATALI / UYARI |
 | hata_mesaji | TEXT | Varsa hata detayı |
+
+### Performans Optimizasyonları
+- ✅ 14 Index (single + composite)
+- ✅ WAL Mode (Write-Ahead Logging)
+- ✅ 64MB Cache
+- ✅ CHECK Constraints (veri doğrulama)
 
 ## 🔄 Veri İşleme Kuralları
 
@@ -208,17 +234,20 @@ Proje_Q/
 - [x] Dokümantasyon yazma
 - [x] Semantic Versioning sistemi
 
-### Faz 2: Veritabanı Katmanı (v0.2.0)
-- [ ] SQLite veritabanı şeması
-- [ ] CRUD operasyonları
-- [ ] Backup/restore fonksiyonları
-- [ ] Veri validasyonu
+### Faz 2: Kurulum Sistemi ✅ (Tamamlandı - v0.2.0)
+- [x] Otomatik kurulum scripti
+- [x] Sistem gereksinim kontrolü
+- [x] Virtual environment kurulumu
+- [x] Detaylı kurulum kılavuzu
 
-### Faz 3: Veri Okuma Modülü (v0.3.0)
-- [ ] Excel okuma (openpyxl)
-- [ ] TXT okuma
-- [ ] Kolon algılama algoritması
-- [ ] Format validasyonu
+### Faz 3: Veritabanı ve Excel Okuyucu ✅ (Tamamlandı - v0.3.0)
+- [x] SQLite veritabanı şeması (2 ana tablo)
+- [x] CRUD operasyonları
+- [x] 14 Index ile performans optimizasyonu
+- [x] Excel okuma modülü (openpyxl)
+- [x] Otomatik rapor tipi algılama
+- [x] Çoklu sheet okuma
+- [x] Test GUI (3 tab, 2 görünüm modu)
 
 ### Faz 4: GUI Geliştirme (v0.4.0)
 - [ ] Ana pencere (PyQt5)
@@ -248,32 +277,43 @@ Proje_Q/
 
 ## 📝 Kaldığımız Yer (Progress Tracking)
 
-### Tamamlanan
-- ✅ Git repository kurulumu
-- ✅ İlk commit ve GitHub bağlantısı
-- ✅ Proje gereksinimleri analizi
-- ✅ Teknik stack belirleme
-- ✅ Klasör yapısı tasarımı
-- ✅ Kapsamlı dokümantasyon (README, TECHNICAL_SPECS, DATABASE_SCHEMA)
-- ✅ Semantic Versioning sistemi (CHANGELOG.md, VERSION)
-- ✅ **Otomatik kurulum sistemi (check_requirements.py, setup_environment.py)**
-- ✅ **Detaylı kurulum kılavuzu (INSTALLATION_GUIDE.md)**
-- ✅ **Geliştirme ortamı hazırlığı (venv, tüm paketler kuruldu)**
+### ✅ Tamamlanan (v0.3.0)
+- ✅ Git repository ve GitHub entegrasyonu
+- ✅ Proje yapısı ve dokümantasyon
+- ✅ Otomatik kurulum sistemi
+- ✅ **Veritabanı sistemi (src/database/db_manager.py - 418 satır)**
+  - 2 ana tablo (hatali_isler, uzun_isler)
+  - 14 performans index'i
+  - CRUD operasyonları
+  - Optimizasyon fonksiyonları
+- ✅ **Excel okuyucu (src/utils/excel_reader.py - 130 satır)**
+  - Otomatik rapor tipi algılama
+  - Çoklu sheet okuma
+  - Ay bilgisi çıkarma
+- ✅ **Test GUI (test_gui.py - 490 satır)**
+  - 3 tab arayüz
+  - 2 görünüm modu (Sheet/JCL bazlı)
+  - Excel yükleme
+  - İstatistikler ve ilerleme çubuğu
 
-### Şu An Üzerinde Çalışılan
-- 🔄 Versiyon 0.2.0 tamamlandı
-- 🎯 Kod implementasyonuna hazır
+### 🎯 Mevcut Durum
+- **Test Edilen Veri:** 381 kayıt (90 hatalı + 291 uzun iş)
+- **Toplam Kod:** ~1000 satır Python
+- **Durum:** Fonksiyonel test GUI çalışıyor
 
-### Sonraki Adımlar (v0.3.0)
-1. Veritabanı yöneticisi modülü (src/database/db_manager.py)
-2. Veri modelleri (src/database/models.py)
-3. Temel CRUD operasyonları
-4. Unit testler
+### 🚀 Sonraki Adımlar (v0.4.0)
+1. Filtreleme ve arama sistemi
+2. Excel export (rapor çıktısı)
+3. Kayıt düzenleme formu
+4. Kayıt silme özellikleri
+5. Grafik ve dashboard
 
 ## 📚 Dokümantasyon
 
 - **[CHANGELOG.md](CHANGELOG.md)** - Versiyon geçmişi ve değişiklikler
-- **[INSTALLATION_GUIDE.md](INSTALLATION_GUIDE.md)** - 🆕 Detaylı kurulum kılavuzu
+- **[PROGRESS_SUMMARY.md](PROGRESS_SUMMARY.md)** - 🆕 İlerleme özeti ve tamamlananlar
+- **[INSTALLATION_GUIDE.md](INSTALLATION_GUIDE.md)** - Detaylı kurulum kılavuzu
+- **[EXCEL_KOLON_LISTESI.md](EXCEL_KOLON_LISTESI.md)** - 🆕 Excel kolon detayları
 - **[docs/TECHNICAL_SPECS.md](docs/TECHNICAL_SPECS.md)** - Teknik spesifikasyonlar
 - **[docs/DATABASE_SCHEMA.md](docs/DATABASE_SCHEMA.md)** - Veritabanı detayları
 - **[VERSION](VERSION)** - Mevcut versiyon numarası
@@ -312,7 +352,7 @@ Bu proje [Semantic Versioning 2.0.0](https://semver.org/lang/tr/) standartların
 - **MINOR**: Geriye dönük uyumlu yeni özellikler  
 - **PATCH**: Geriye dönük uyumlu bug düzeltmeleri
 
-**Mevcut Versiyon:** 0.2.0 (Development)
+**Mevcut Versiyon:** 0.3.0 (Functional Test)
 
 Tüm değişiklikler için [CHANGELOG.md](CHANGELOG.md) dosyasına bakın.
 
@@ -335,5 +375,16 @@ Bu proje özel kullanım içindir.
 ---
 
 **Son Güncelleme:** 05.03.2026  
-**Versiyon:** 0.2.0  
-**Durum:** Geliştirme Ortamı Hazır - Kod İmplementasyonuna Hazır
+**Versiyon:** 0.3.0  
+**Durum:** Test GUI Çalışıyor - 381 Kayıt Yüklendi  
+**Sonraki Hedef:** Filtreleme, Arama ve Excel Export (v0.4.0)
+
+## 🎉 Çalıştırma
+
+```bash
+# Test GUI'yi başlat
+python test_gui.py
+
+# Excel dosyalarını yükle
+# "Excel Yukle" → Data/Excel/ klasöründen dosya seç
+```
