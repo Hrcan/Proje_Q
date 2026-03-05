@@ -130,7 +130,7 @@ class MainWindow(QMainWindow):
         row2.addWidget(ay_label)
         row2.addWidget(self.ay_combo, 1)
         
-        # Satır 3: Rapor Tipi ve Hızlı Butonlar
+        # Satır 3: Rapor Tipi
         row3 = QHBoxLayout()
         
         # Rapor Tipi Checkboxlar
@@ -142,8 +142,31 @@ class MainWindow(QMainWindow):
         self.cb_uzun.setChecked(True)
         self.cb_uzun.stateChanged.connect(self.on_filter_changed)
         
-        # Hızlı Butonlar
-        self.btn_clear_filter = QPushButton("Filtreleri Temizle")
+        row3.addWidget(self.cb_hatali)
+        row3.addWidget(self.cb_uzun)
+        row3.addStretch()
+        
+        # Satır 4: Gelişmiş Filtreler ve Butonlar
+        row4 = QHBoxLayout()
+        
+        # Gelişmiş Filtreleme butonu
+        self.btn_advanced_filter = QPushButton("🔍 Gelişmiş Filtreler")
+        self.btn_advanced_filter.clicked.connect(self.show_advanced_filters)
+        self.btn_advanced_filter.setStyleSheet("""
+            QPushButton {
+                padding: 5px 15px;
+                background-color: #2196F3;
+                color: white;
+                border: none;
+                border-radius: 3px;
+            }
+            QPushButton:hover {
+                background-color: #1976D2;
+            }
+        """)
+        
+        # Filtreleri Temizle butonu
+        self.btn_clear_filter = QPushButton("❌ Filtreleri Temizle")
         self.btn_clear_filter.clicked.connect(self.clear_filters)
         self.btn_clear_filter.setStyleSheet("""
             QPushButton {
@@ -158,14 +181,29 @@ class MainWindow(QMainWindow):
             }
         """)
         
-        row3.addWidget(self.cb_hatali)
-        row3.addWidget(self.cb_uzun)
-        row3.addStretch()
-        row3.addWidget(self.btn_clear_filter)
+        # Gelişmiş filtre durumu etiketi
+        self.advanced_filter_label = QLabel("")
+        self.advanced_filter_label.setStyleSheet("color: #2196F3; font-weight: bold;")
+        
+        row4.addWidget(self.btn_advanced_filter)
+        row4.addWidget(self.btn_clear_filter)
+        row4.addWidget(self.advanced_filter_label)
+        row4.addStretch()
         
         layout.addLayout(row1)
         layout.addLayout(row2)
         layout.addLayout(row3)
+        layout.addLayout(row4)
+        
+        # Gelişmiş filtre değişkenleri
+        self.advanced_filters = {
+            'tarih_baslangic': None,
+            'tarih_bitis': None,
+            'hatali_min': None,
+            'hatali_max': None,
+            'uzun_min': None,
+            'uzun_max': None
+        }
         
         return search_group
     
