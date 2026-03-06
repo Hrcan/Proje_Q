@@ -318,7 +318,13 @@ Proje_Q/
 - **[docs/DATABASE_SCHEMA.md](docs/DATABASE_SCHEMA.md)** - Veritabanı detayları
 - **[VERSION](VERSION)** - Mevcut versiyon numarası
 
-## 🚀 Kurulum
+## 🚀 Hızlı Başlangıç
+
+### 1. Kurulum
+
+**Gereksinimler:**
+- Python 3.8 veya üstü
+- Windows 10/11
 
 ### Hızlı Başlangıç
 

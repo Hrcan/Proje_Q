@@ -1,0 +1,23 @@
+{
+    "window": {
+        "x": 20,
+        "y": 51,
+        "width": 1800,
+        "height": 970
+    },
+    "filters": {
+        "last_jcl": "",
+        "last_ekip": "Tümü",
+        "last_ay": "Tümü",
+        "cb_hatali": true,
+        "cb_uzun": true
+    },
+    "export": {
+        "last_folder": "",
+        "default_columns": []
+    },
+    "theme": "dark",
+    "auto_backup": true,
+    "backup_interval_days": 7,
+    "last_backup": "2026-03-06T18:01:38.482596"
+}
