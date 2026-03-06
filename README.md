@@ -380,17 +380,77 @@ Bu proje özel kullanım içindir.
 
 ---
 
-**Son Güncelleme:** 05.03.2026  
-**Versiyon:** 0.3.0  
-**Durum:** Test GUI Çalışıyor - 381 Kayıt Yüklendi  
-**Sonraki Hedef:** Filtreleme, Arama ve Excel Export (v0.4.0)
+**Son Güncelleme:** 06.03.2026  
+**Versiyon:** 0.4.0  
+**Durum:** Logger Sistemi Entegrasyonu Tamamlandı  
+**Sonraki Hedef:** Log Fonksiyonu Düzeltmeleri
 
 ## 🎉 Çalıştırma
 
 ```bash
-# Test GUI'yi başlat
-python test_gui.py
+# Ana programı başlat
+python -m src.main
 
-# Excel dosyalarını yükle
-# "Excel Yukle" → Data/Excel/ klasöründen dosya seç
+# veya
+python src/main.py
 ```
+
+---
+
+## 📌 SONRAKİ SOHBET İÇİN NOTLAR
+
+### ⚠️ ÖNCELİKLİ: Log Fonksiyonu Düzeltilmesi
+
+**Durum:** Logger sistemi kuruldu ve entegre edildi ama kullanıcı istediği gibi çalışmıyor.
+
+### ✅ Bu Sohbette Tamamlananlar (06.03.2026):
+
+1. **Logger Sistemi Oluşturuldu** (`src/utils/logger.py`)
+   - Hem dosya hem konsol loglama
+   - UTF-8 Türkçe karakter desteği
+   - 4 log seviyesi: DEBUG, INFO, WARNING, ERROR
+   - 10 MB maksimum dosya boyutu, 5 backup
+
+2. **Ana Programa Logger Eklendi** (`src/main.py`)
+   - Başlangıç banner logları
+   - PyQt5 uygulama başlatma logu
+   - Ana pencere açılış logu
+
+3. **MainWindow Logger Entegrasyonu** (`src/ui/main_window.py`)
+   - `init_database()`: Veritabanı başlatma logları
+   - `load_excel()`: Excel yükleme süreç logları (her dosya için)
+   - `clear_database()`: Veritabanı temizleme logları
+   - `on_search_changed()`: Arama logları
+
+4. **Log Viewer Düzeltildi** (`src/ui/log_viewer_dialog.py`)
+   - Gerçek log dosyasını gösteriyor: `logs/app.log`
+   - Düzgün okuma ve görüntüleme
+
+5. **Git Commit:** c4485e8 - "Logger entegrasyonu eklendi - MainWindow'a logger desteği (v0.4.0)"
+
+### 🔴 Sonraki Sohbette Yapılacaklar:
+
+**Ana Konu:** Log fonksiyonu kullanıcının istediği gibi çalışmıyor - düzeltilecek!
+
+**Sorulacak Sorular:**
+- Log formatı nasıl olmalı?
+- Türkçe karakterler düzgün görünüyor mu?
+- Log viewer'da sorun var mı?
+- Başka hangi özellik eksik?
+
+**Potansiyel Sorunlar:**
+- Log çıktısı format problemi
+- Türkçe karakter kodlaması
+- Log seviyesi filtreleme
+- Timestamp formatı
+- Log Viewer görüntüleme
+
+### 📝 Kullanıcı Notu:
+> "log fonksiyonu istedigim gibi çalışmıyor sonraki sohbette devam edecegiz."
+
+**Detaylı notlar için:** `SONRAKI_SOHBET_NOTLARI.md` dosyasına bakın.
+
+---
+
+**Git Status:** ✅ Tüm değişiklikler commit edildi ve GitHub'a push edildi  
+**Son Commit:** c4485e8 (06.03.2026 - 19:22)
