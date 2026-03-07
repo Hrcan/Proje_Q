@@ -36,3 +36,13 @@ Thumbs.db
 
 # Config
 config/user_prefs.json
+config/search_favorites.json
+config/search_history.json
+
+# Test/Temporary files
+.coverage
+a.csv
+a.xlsx
+arama_sonuclari.csv
+arama_sonuclari.xlsx
+toplu_jcl_sorgulama.xlsx

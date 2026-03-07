@@ -101,6 +101,19 @@ class DialogManager:
         
         return results
     
+    def show_advanced_search(self):
+        """Gelişmiş arama penceresi göster - YENİ v0.6.0"""
+        try:
+            from ..advanced_search_dialog import AdvancedSearchDialog
+            
+            dialog = AdvancedSearchDialog(self.parent, self.parent.db_manager)
+            dialog.exec_()
+        except Exception as e:
+            QMessageBox.critical(
+                self.parent, "Hata", 
+                f"Gelişmiş arama dialog hatası: {e}"
+            )
+    
     def show_advanced_filters(self):
         """Gelişmiş filtreler dialogu göster"""
         try:

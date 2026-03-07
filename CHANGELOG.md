@@ -18,10 +18,103 @@ Bu proje [Semantic Versioning](https://semver.org/lang/tr/) standartlarını tak
 ## [Unreleased]
 
 ### Planlanan
-- Veritabanı katmanı implementasyonu (v0.3.0)
-- Excel okuyucu modülü (v0.4.0)
-- PyQt5 GUI geliştirme (v0.5.0)
-- Raporlama sistemi (v0.6.0)
+- Veri analiz raporları genişletme
+- Otomatik veri yedekleme sistemi
+- Çoklu dil desteği
+- Gelişmiş grafik/chart özellikleri
+
+---
+
+## [1.0.0] - 2026-03-07 🎉 **İLK STABİL SÜRÜM**
+
+### 🚀 Production Release - Canlı Kullanıma Hazır
+
+**Önemli:** Bu, Proje_Q'nun ilk production-ready sürümüdür. Tüm temel özellikler tamamlanmış, test edilmiş ve kullanıma hazır hale getirilmiştir.
+
+### Added - Yeni Özellikler
+
+#### 📊 Tam Fonksiyonel GUI
+- ✅ **Ana Pencere**: Modern PyQt5 arayüzü
+  - Hatalı İşler ve Uzun Süren İşler için ayrı sekmeler
+  - Gerçek zamanlı arama ve filtreleme
+  - Çoklu sütun sıralama
+  - Excel/CSV export özellikleri
+  
+- ✅ **Gelişmiş Arama Sistemi**
+  - 5 farklı arama modu (Temel, Sayısal, Regex, Toplu JCL, Favoriler)
+  - Wildcard desteği (`*`, `?`)
+  - Regex pattern matching
+  - **Toplu JCL Sorgulama**: Excel'den kopyala-yapıştır
+  - Wildcard genişletme (her eşleşen JCL ayrı satırda)
+  - Arama geçmişi ve favoriler
+  - Ortak sonuç tablosu
+  
+- ✅ **Veritabanı Yönetimi**
+  - SQLite veritabanı implementasyonu
+  - Hatalı İşler ve Uzun Süren İşler tabloları
+  - CRUD operasyonları
+  - Veritabanı yedekleme sistemi
+  
+- ✅ **Excel Import/Export**
+  - Excel dosyalarından veri okuma
+  - Çoklu sheet desteği
+  - Otomatik veri doğrulama
+  - Excel/CSV export
+  
+- ✅ **Logging Sistemi**
+  - Tüm işlemler loglanıyor
+  - Log viewer dialog
+  - Log panel (30 saniye otomatik yenileme)
+  - Farklı log seviyeleri (INFO, WARNING, ERROR)
+
+#### 🔧 Deployment & Build
+- ✅ **PyInstaller Integration**
+  - Proje_Q.spec dosyası
+  - EXE build otomasyonu
+  - build_release.bat script
+  
+- ✅ **Windows Installer**
+  - Inno Setup installer.iss
+  - Türkçe/İngilizce dil desteği
+  - Otomatik kurulum sihirbazı
+  - Desktop shortcut opsiyonu
+  - Otomatik klasör oluşturma
+
+### Changed - Değişiklikler
+- 🔄 **UI Düzen**: Yan yana panel sistemi (Sol 40%, Sağ 60%)
+- 🔄 **Arama Sonuçları**: Tüm arama tipleri ortak tabloda
+- 🔄 **Log Sistemi**: Timer 500ms → 30 saniye (CPU optimizasyonu)
+- 🔄 **Regex Önceliği**: Regex etkinse sadece regex arama yapılıyor
+
+### Fixed - Düzeltmeler
+- 🐛 **Regex Arama**: Öncelik sırası düzeltildi
+- 🐛 **Wildcard**: Genişletme doğru çalışıyor
+- 🐛 **Log Timer**: CPU kullanımı optimize edildi
+- 🐛 **Export**: Tüm fonksiyonlara log eklendi
+
+### Technical Stack
+```
+Python: 3.12.10
+PyQt5: 5.15.10
+SQLite: 3.x
+openpyxl: 3.1.2
+PyInstaller: 6.x
+Inno Setup: 6.x
+```
+
+### Build & Deployment
+```batch
+# EXE Build
+build_release.bat
+
+# Windows Installer
+Inno Setup ile installer.iss compile et
+```
+
+### Known Limitations
+- Windows 10/11 için optimize edilmiştir
+- Excel 2007+ format desteği (.xlsx)
+- Maksimum önerilen kayıt: ~100,000
 
 ---
 
@@ -142,6 +235,7 @@ Versiyon formatı: `MAJOR.MINOR.PATCH[-PRERELEASE]`
 - `1.0.0-beta` → İlk beta sürümü
 - `1.0.0` → İlk stabil sürüm
 
-[Unreleased]: https://github.com/Hrcan/proje_q/compare/v0.2.0...HEAD
-[0.2.0]: https://github.com/Hrcan/proje_q/compare/v0.1.0...v0.2.0
-[0.1.0]: https://github.com/Hrcan/proje_q/releases/tag/v0.1.0
+[Unreleased]: https://github.com/Hrcan/Proje_Q/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/Hrcan/Proje_Q/releases/tag/v1.0.0
+[0.2.0]: https://github.com/Hrcan/Proje_Q/compare/v0.1.0...v0.2.0
+[0.1.0]: https://github.com/Hrcan/Proje_Q/releases/tag/v0.1.0

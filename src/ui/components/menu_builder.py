@@ -118,6 +118,14 @@ class MenuBuilder:
         """Araçlar menüsünü oluştur"""
         tools_menu = menubar.addMenu('🔧 Araçlar')
         
+        # Gelişmiş Arama - YENİ v0.6.0
+        advanced_search_action = QAction('🔍 Gelişmiş Arama...', self.parent)
+        advanced_search_action.setShortcut('Ctrl+F')
+        advanced_search_action.triggered.connect(self.parent.show_advanced_search)
+        tools_menu.addAction(advanced_search_action)
+        
+        tools_menu.addSeparator()
+        
         # Ayarlar
         settings_action = QAction('⚙️ Ayarlar...', self.parent)
         settings_action.setShortcut('Ctrl+,')

@@ -29,6 +29,14 @@ class ToolbarBuilder:
     
     def add_file_actions(self, toolbar):
         """Dosya işlemleri butonları"""
+        # Gelişmiş Arama - YENİ v0.6.0
+        advanced_search_btn = QAction('🔍 Gelişmiş Arama', self.parent)
+        advanced_search_btn.setToolTip('Gelişmiş arama penceresi (Ctrl+F)')
+        advanced_search_btn.triggered.connect(self.parent.show_advanced_search)
+        toolbar.addAction(advanced_search_btn)
+        
+        toolbar.addSeparator()
+        
         # Excel Yükle
         load_btn = QAction('📂 Yükle', self.parent)
         load_btn.setToolTip('Excel dosyası yükle (Ctrl+O)')

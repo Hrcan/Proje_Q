@@ -483,6 +483,10 @@ class MainWindow(QMainWindow):
                 self.status_label.setText("✅ Veritabanı temizlendi")
     
     # Dialog metodları - DialogManager'a yönlendir
+    def show_advanced_search(self):
+        """Gelişmiş arama penceresi - YENİ v0.6.0"""
+        self.dialog_manager.show_advanced_search()
+    
     def show_bulk_search(self):
         """Toplu arama dialogu"""
         self.dialog_manager.show_bulk_search()
@@ -611,10 +615,10 @@ class MainWindow(QMainWindow):
         
         log_layout.addLayout(btn_layout)
         
-        # Log otomatik güncelleme timer'ı (gerçek zamanlı için hızlı güncelleme)
+        # Log otomatik güncelleme timer'ı
         self.log_timer = QTimer(self)
         self.log_timer.timeout.connect(self.update_log_panel)
-        self.log_timer.start(500)  # Her 0.5 saniyede bir güncelle (senkron akış)
+        self.log_timer.start(30000)  # Her 30 saniyede bir güncelle
         
         # İlk güncelleme
         self.update_log_panel()
@@ -670,19 +674,15 @@ class MainWindow(QMainWindow):
             html_parts.append('</div>')
             html_content = ''.join(html_parts)
             
-            # Scroll pozisyonunu koru
-            scrollbar = self.log_text.verticalScrollBar()
-            was_at_bottom = scrollbar.value() >= scrollbar.maximum() - 10
-            
             # HTML'i set et
             self.log_text.setHtml(html_content)
             
             # Memory leak prevention - limit block count
             self.log_text.document().setMaximumBlockCount(UIConstants.LOG_PANEL_MAX_LINES * 2)
             
-            # En alta scroll et (en yeni loglar en altta)
-            if was_at_bottom:
-                scrollbar.setValue(scrollbar.maximum())
+            # HER ZAMAN en alta scroll et (en yeni loglar en altta gösterilsin)
+            scrollbar = self.log_text.verticalScrollBar()
+            scrollbar.setValue(scrollbar.maximum())
                     
         except Exception as e:
             # Hata durumunda bilgi göster
