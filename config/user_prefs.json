@@ -1,9 +1,9 @@
 {
     "window": {
-        "x": 20,
-        "y": 51,
-        "width": 1800,
-        "height": 970
+        "x": 365,
+        "y": 105,
+        "width": 2191,
+        "height": 956
     },
     "filters": {
         "last_jcl": "",
@@ -16,7 +16,7 @@
         "last_folder": "",
         "default_columns": []
     },
-    "theme": "dark",
+    "theme": "blue",
     "auto_backup": true,
     "backup_interval_days": 7,
     "last_backup": "2026-03-06T18:01:38.482596"

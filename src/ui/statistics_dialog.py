@@ -194,34 +194,67 @@ class StatisticsDialog(QDialog):
         return table
     
     def create_top_hatali_table(self):
-        """En çok hatalı JCL'ler"""
+        """Tüm işler - JCL adı ve ekipler"""
+        widget = QWidget()
+        layout = QVBoxLayout(widget)
+        
+        # Açıklama
+        info_label = QLabel("📋 Tüm işler JCL adı ve sorumlu ekipler ile gösterilmektedir")
+        info_label.setStyleSheet("padding: 5px; background-color: #E3F2FD; border-radius: 3px;")
+        layout.addWidget(info_label)
+        
         table = QTableWidget()
-        table.setColumnCount(4)
-        table.setHorizontalHeaderLabels(['JCL Adı', 'Toplam Hata', 'Sorumlu Ekip', 'Son Ay'])
+        table.setColumnCount(3)
+        table.setHorizontalHeaderLabels(['#', 'JCL Adı', 'Sorumlu Ekip(ler)'])
         
+        # Hem hatalı hem uzun işleri al
         hatali_data = self.db_manager.get_all_hatali_isler()
+        uzun_data = self.db_manager.get_all_uzun_isler()
         
-        # JCL bazında topla
-        jcl_stats = {}
+        # JCL bazında ekipleri topla
+        jcl_ekipler = {}
+        
         for record in hatali_data:
             jcl = record['jcl_adi']
-            if jcl not in jcl_stats:
-                jcl_stats[jcl] = {
-                    'total': 0,
-                    'ekip': record.get('sorumlu_ekip', ''),
-                    'son_ay': record.get('ay', '')
-                }
-            jcl_stats[jcl]['total'] += record.get('hatali_sayi_ay', 0) or 0
+            ekip = record.get('sorumlu_ekip', 'Bilinmiyor')
+            if jcl not in jcl_ekipler:
+                jcl_ekipler[jcl] = set()
+            if ekip:
+                jcl_ekipler[jcl].add(ekip)
         
-        # En çok hatalı 20'yi al
-        top_jcls = sorted(jcl_stats.items(), key=lambda x: x[1]['total'], reverse=True)[:20]
+        for record in uzun_data:
+            jcl = record['jcl_adi']
+            ekip = record.get('sorumlu_ekip', 'Bilinmiyor')
+            if jcl not in jcl_ekipler:
+                jcl_ekipler[jcl] = set()
+            if ekip:
+                jcl_ekipler[jcl].add(ekip)
         
-        table.setRowCount(len(top_jcls))
-        for idx, (jcl, stats) in enumerate(top_jcls):
-            table.setItem(idx, 0, QTableWidgetItem(jcl))
-            table.setItem(idx, 1, QTableWidgetItem(str(stats['total'])))
-            table.setItem(idx, 2, QTableWidgetItem(stats['ekip']))
-            table.setItem(idx, 3, QTableWidgetItem(stats['son_ay']))
+        # Alfabetik sırala
+        sorted_jcls = sorted(jcl_ekipler.items(), key=lambda x: x[0])
+        
+        table.setRowCount(len(sorted_jcls))
+        for idx, (jcl, ekipler) in enumerate(sorted_jcls):
+            # Sıra numarası
+            table.setItem(idx, 0, QTableWidgetItem(str(idx + 1)))
+            
+            # JCL adı
+            table.setItem(idx, 1, QTableWidgetItem(jcl))
+            
+            # Ekipler - birden fazla varsa kutucuklar halinde
+            ekip_list = sorted(ekipler)
+            ekip_text = ' | '.join(ekip_list)  # Ekipleri | ile ayır
+            ekip_item = QTableWidgetItem(ekip_text)
+            
+            # Birden fazla ekip varsa renklendir
+            if len(ekip_list) > 1:
+                ekip_item.setBackground(Qt.yellow)
+                ekip_item.setToolTip(f"Birden fazla ekip: {', '.join(ekip_list)}")
+            
+            table.setItem(idx, 2, ekip_item)
         
         table.resizeColumnsToContents()
-        return table
+        table.setColumnWidth(2, 300)  # Ekipler sütunu için daha geniş
+        
+        layout.addWidget(table)
+        return widget

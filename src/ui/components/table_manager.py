@@ -2,20 +2,59 @@
 Tablo Yöneticisi - Tablo işlemleri için merkezi modül
 Proje_Q - JCL Veri Yönetim Sistemi
 """
-from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QTabWidget, QTableWidget, QTableWidgetItem
 from PyQt5.QtGui import QColor
 from PyQt5.QtCore import Qt
 
 
-class TableManager:
+class TableManager(QWidget):
     """Tablo oluşturma, yükleme ve filtreleme işlemlerini yöneten sınıf"""
     
-    def __init__(self, parent):
+    def __init__(self, parent, db_manager=None):
         """
         Args:
             parent: Ana pencere referansı (MainWindow)
+            db_manager: Veritabanı yöneticisi (opsiyonel)
         """
+        super().__init__(parent)
         self.parent = parent
+        self.db_manager = db_manager
+        
+        # UI'yi oluştur
+        self.init_ui()
+    
+    def init_ui(self):
+        """Tablo bölümünü oluştur"""
+        layout = QVBoxLayout(self)
+        layout.setContentsMargins(0, 0, 0, 0)
+        
+        # Tab Widget
+        self.tabs = QTabWidget()
+        self.tabs.setStyleSheet("""
+            QTabBar::tab {
+                padding: 10px 20px;
+                font-size: 12px;
+                font-weight: bold;
+            }
+            QTabBar::tab:selected {
+                background: #2196F3;
+                color: white;
+            }
+        """)
+        
+        # Tab 1: Hatalı İşler
+        self.hatali_table = self.create_table()
+        self.tabs.addTab(self.hatali_table, "❌ HATALI İŞLER")
+        
+        # Tab 2: Uzun İşler
+        self.uzun_table = self.create_table()
+        self.tabs.addTab(self.uzun_table, "⏱️ UZUN SÜREN İŞLER")
+        
+        # Tab 3: Birleşik Görünüm
+        self.birlesik_table = self.create_table()
+        self.tabs.addTab(self.birlesik_table, "📊 BİRLEŞİK GÖRÜNÜM")
+        
+        layout.addWidget(self.tabs)
     
     def create_table(self):
         """Yeni bir tablo widget'ı oluştur ve yapılandır"""
@@ -273,6 +312,57 @@ class TableManager:
             table.setItem(row_idx, 6, durum_item)
         
         table.resizeColumnsToContents()
+    
+    def load_all_tables(self, filters):
+        """Tüm tabloları filtrelerle yükle
+        
+        Args:
+            filters: Filtre bilgilerini içeren dict
+                - jcl: JCL arama metni
+                - ekip: Seçilen ekip
+                - ay: Seçilen ay
+                - hatali: Hatalı işleri göster (bool)
+                - uzun: Uzun işleri göster (bool)
+        """
+        self.load_hatali_table(
+            self.hatali_table, 
+            self.db_manager,
+            filters['jcl'],
+            filters['ekip'],
+            filters['ay'],
+            filters['hatali']
+        )
+        
+        self.load_uzun_table(
+            self.uzun_table,
+            self.db_manager,
+            filters['jcl'],
+            filters['ekip'],
+            filters['ay'],
+            filters['uzun']
+        )
+        
+        self.load_birlesik_table(
+            self.birlesik_table,
+            self.db_manager,
+            filters['jcl'],
+            filters['ekip'],
+            filters['ay'],
+            filters['hatali'],
+            filters['uzun']
+        )
+    
+    def get_visible_counts(self):
+        """Görünür kayıt sayılarını döndür
+        
+        Returns:
+            dict: Her tablo için görünür kayıt sayıları
+        """
+        return {
+            'hatali': self.hatali_table.rowCount(),
+            'uzun': self.uzun_table.rowCount(),
+            'birlesik': self.birlesik_table.rowCount()
+        }
     
     def update_stats(self, stats_label, hatali_table, uzun_table, birlesik_table, db_manager):
         """İstatistikleri güncelle"""

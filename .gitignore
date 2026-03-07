@@ -4,84 +4,35 @@ __pycache__/
 *$py.class
 *.so
 .Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-pip-wheel-metadata/
-share/python-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
-
-# Virtual Environment
-venv/
-ENV/
 env/
-.venv
+venv/
+*.egg-info/
+dist/
+build/
 
 # IDE
 .vscode/
 .idea/
 *.swp
 *.swo
-*~
-.DS_Store
-
-# PyQt
-*.ui.py
-*.qrc.py
 
 # Database
-database/*.db
-database/*.db-journal
-database/*.db-wal
-database/*.db-shm
-!database/.gitkeep
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
 
 # Logs
-logs/*.log
-logs/*.txt
-!logs/.gitkeep
+logs/
+*.log
 
-# Backup
-backup/*.db
-backup/*.zip
-!backup/.gitkeep
-
-# Build
-build/
-dist/
-*.spec
-
-# Test
-.pytest_cache/
-.coverage
-htmlcov/
-*.cover
-.hypothesis/
-
-# Temporary files
-*.tmp
-*.temp
-~$*.xlsx
-~$*.docx
+# Backup files - LARGE
+backup/full_backups/*.zip
 
 # OS
+.DS_Store
 Thumbs.db
-Desktop.ini
+*.tmp
 
-# Sensitive
-*.key
-*.pem
-config.ini
-secrets.json
+# Config
+config/user_prefs.json

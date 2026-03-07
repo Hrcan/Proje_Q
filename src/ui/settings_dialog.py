@@ -139,9 +139,23 @@ class SettingsDialog(QDialog):
     
     def save_settings(self):
         """Ayarları kaydet"""
-        self.preferences.set('theme', self.theme_combo.currentText())
+        from utils.logger import app_logger
+        
+        old_theme = self.preferences.get('theme', 'light')
+        new_theme = self.theme_combo.currentText()
+        
+        # Tema değişti mi?
+        if old_theme != new_theme:
+            app_logger.info(f"Tema değiştirildi: {old_theme} -> {new_theme}")
+            self.preferences.set('theme', new_theme)
+            # Parent'ın change_theme metodunu çağır
+            if hasattr(self.parent(), 'change_theme'):
+                self.parent().change_theme(new_theme)
+        
         self.preferences.set('auto_backup', self.auto_backup_cb.isChecked())
         self.preferences.set('backup_interval_days', self.backup_interval.value())
+        
+        app_logger.info("Ayarlar kaydedildi")
         
         QMessageBox.information(self, "Başarılı", "✅ Ayarlar kaydedildi!")
         self.accept()

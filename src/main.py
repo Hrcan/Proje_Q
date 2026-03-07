@@ -5,8 +5,8 @@ import sys
 from PyQt5.QtWidgets import QApplication
 
 # Main window'u import et
-from src.ui.main_window import MainWindow
-from src.utils.logger import app_logger
+from ui.main_window import MainWindow
+from utils.logger import app_logger
 
 
 def main():
