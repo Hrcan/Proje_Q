@@ -51,14 +51,16 @@ class ExcelReader:
             FileNotFoundError: Dosya mevcut değilse
             InvalidFileFormatError: Dosya Excel formatında değilse
         """
-        if not os.path.exists(file_path):
-            raise FileNotFoundError(f"Dosya bulunamadı: {file_path}")
-        
+        # Önce format kontrolü yap (dosya yoksa bile)
         if not file_path.lower().endswith(('.xlsx', '.xls')):
             raise InvalidFileFormatError(
                 f"Geçersiz dosya formatı: {file_path}. "
                 "Sadece .xlsx ve .xls dosyaları desteklenir."
             )
+        
+        # Sonra dosya varlığını kontrol et
+        if not os.path.exists(file_path):
+            raise FileNotFoundError(f"Dosya bulunamadı: {file_path}")
         
         self.file_path = file_path
         self.file_name = os.path.basename(file_path)
