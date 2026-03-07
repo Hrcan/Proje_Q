@@ -1,4 +1,4 @@
-# Proje_Q - JCL Veri Yönetim Sistemi
+# Proje_Q - Excel Veri Yönetim ve Analiz Sistemi
 
 ![Version](https://img.shields.io/badge/version-0.4.0-blue.svg)
 ![Status](https://img.shields.io/badge/status-active_development-green.svg)
@@ -7,7 +7,7 @@
 
 ## 📋 Proje Özeti
 
-Excel raporlarından JCL (Job Control Language) verilerini okuyup SQLite veritabanına kaydeden, yöneten ve raporlayan **modern masaüstü uygulaması**.
+Excel raporlarından iş verilerini okuyup SQLite veritabanına kaydeden, yöneten ve raporlayan **modern masaüstü uygulaması**.
 
 **Ana Özellikler:**
 - 📊 Excel dosyalarından otomatik veri yükleme
@@ -80,8 +80,8 @@ Proje_Q/
 ## 📊 Veritabanı
 
 Proje 2 ana tablo kullanır:
-- **hatali_isler** - Hatalı çalışan JCL'ler (11 kolon)
-- **uzun_isler** - Uzun süren JCL'ler (10 kolon)
+- **hatali_isler** - Hatalı çalışan işler (11 kolon)
+- **uzun_isler** - Uzun süren işler (10 kolon)
 
 **Detaylı şema:** [docs/DATABASE_SCHEMA.md](docs/DATABASE_SCHEMA.md)
 
