@@ -5,8 +5,8 @@ import os
 from datetime import datetime
 from PyQt5.QtWidgets import (QDialog, QVBoxLayout, QHBoxLayout, QPushButton,
                              QTextEdit, QLabel, QComboBox, QFileDialog,
-                             QMessageBox)
-from PyQt5.QtCore import Qt
+                             QMessageBox, QCheckBox)
+from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QFont
 
 
@@ -16,10 +16,16 @@ class LogViewerDialog(QDialog):
     def __init__(self, parent):
         super().__init__(parent)
         self.log_dir = "logs"
+        self.last_position = 0  # Son okunan pozisyon
+        self.auto_scroll = True  # Otomatik scroll
         
         self.setWindowTitle("📋 Log Görüntüleyici")
         self.setModal(True)
         self.setMinimumSize(900, 600)
+        
+        # Auto-refresh timer
+        self.refresh_timer = QTimer(self)
+        self.refresh_timer.timeout.connect(self.auto_refresh_logs)
         
         self.init_ui()
         self.center_on_screen()
@@ -62,6 +68,12 @@ class LogViewerDialog(QDialog):
         self.type_combo.addItems(["Tüm Loglar", "INFO", "WARNING", "ERROR"])
         self.type_combo.currentTextChanged.connect(self.filter_logs)
         
+        # Auto-refresh checkbox
+        self.auto_refresh_cb = QCheckBox("🔄 Otomatik Yenile (2sn)")
+        self.auto_refresh_cb.setChecked(True)  # Varsayılan açık
+        self.auto_refresh_cb.stateChanged.connect(self.toggle_auto_refresh)
+        self.auto_refresh_cb.setStyleSheet("padding: 5px;")
+        
         # Yenile butonu
         btn_refresh = QPushButton("🔄 Yenile")
         btn_refresh.clicked.connect(self.load_logs)
@@ -79,6 +91,7 @@ class LogViewerDialog(QDialog):
         
         controls_layout.addWidget(type_label)
         controls_layout.addWidget(self.type_combo)
+        controls_layout.addWidget(self.auto_refresh_cb)
         controls_layout.addStretch()
         controls_layout.addWidget(btn_refresh)
         controls_layout.addWidget(btn_clear)
@@ -228,3 +241,67 @@ class LogViewerDialog(QDialog):
                 self.info_label.setText(f"✅ Loglar export edildi: {os.path.basename(file_path)}")
         except Exception as e:
             QMessageBox.critical(self, "Hata", f"Export hatası: {e}")
+    
+    def toggle_auto_refresh(self, state):
+        """Auto-refresh özelliğini aç/kapat"""
+        if state == Qt.Checked:
+            # Auto-refresh başlat (2 saniyede bir)
+            self.refresh_timer.start(2000)
+            self.info_label.setText("🔄 Otomatik yenileme aktif (2 saniyede bir)")
+        else:
+            # Auto-refresh durdur
+            self.refresh_timer.stop()
+            self.info_label.setText("⏸️ Otomatik yenileme durduruldu")
+    
+    def auto_refresh_logs(self):
+        """Yeni logları otomatik yükle (tail -f benzeri)"""
+        try:
+            log_file = os.path.join(self.log_dir, "app.log")
+            if not os.path.exists(log_file):
+                return
+            
+            # Dosya boyutunu kontrol et
+            current_size = os.path.getsize(log_file)
+            
+            # Eğer dosya büyümüşse yeni logları oku
+            if current_size > self.last_position:
+                with open(log_file, 'r', encoding='utf-8') as f:
+                    f.seek(self.last_position)  # Son okunan pozisyondan devam et
+                    new_lines = f.readlines()
+                    self.last_position = f.tell()  # Yeni pozisyonu kaydet
+                
+                if new_lines:
+                    # Yeni logları mevcut loglara ekle (en üste)
+                    new_logs = [line.strip() for line in new_lines if line.strip()]
+                    self.all_logs = new_logs[::-1] + self.all_logs  # Ters çevir ve başa ekle
+                    
+                    # Ekranı güncelle
+                    self.filter_logs()
+                    
+                    # Otomatik scroll (en yeni log üstte olduğu için yukarı scroll)
+                    if self.auto_scroll:
+                        self.log_text.verticalScrollBar().setValue(0)
+                    
+                    # Bilgi güncelle
+                    self.info_label.setText(
+                        f"🔄 {len(new_logs)} yeni log eklendi | Toplam: {len(self.all_logs)}"
+                    )
+            
+        except Exception as e:
+            # Sessizce devam et (kullanıcıyı rahatsız etme)
+            pass
+    
+    def showEvent(self, event):
+        """Dialog açıldığında auto-refresh başlat"""
+        super().showEvent(event)
+        if self.auto_refresh_cb.isChecked():
+            self.refresh_timer.start(2000)
+            # İlk pozisyonu kaydet
+            log_file = os.path.join(self.log_dir, "app.log")
+            if os.path.exists(log_file):
+                self.last_position = os.path.getsize(log_file)
+    
+    def closeEvent(self, event):
+        """Dialog kapandığında auto-refresh durdur"""
+        self.refresh_timer.stop()
+        super().closeEvent(event)
