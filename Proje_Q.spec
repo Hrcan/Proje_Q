@@ -24,6 +24,9 @@ a = Analysis(
         'openpyxl.cell',
         'openpyxl.styles',
         'sqlite3',
+        # Windows kısayol için
+        'win32com',
+        'win32com.client',
         # Src modülleri
         'ui',
         'ui.main_window',
@@ -41,6 +44,7 @@ a = Analysis(
         'ui.components.search_panel',
         'ui.components.table_manager',
         'ui.components.toolbar_builder',
+        'ui.first_run_dialog',
         'database',
         'database.db_manager',
         'utils',
@@ -56,8 +60,6 @@ a = Analysis(
     runtime_hooks=[],
     excludes=[
         'matplotlib',
-        'numpy',
-        'pandas',
         'scipy',
         'tkinter',
         'unittest',
@@ -75,13 +77,17 @@ pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
 exe = EXE(
     pyz,
     a.scripts,
+    a.binaries,
+    a.zipfiles,
+    a.datas,
     [],
-    exclude_binaries=True,
     name='Proje_Q',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
     upx=True,
+    upx_exclude=[],
+    runtime_tmpdir=None,
     console=False,  # GUI application
     disable_windowed_traceback=False,
     argv_emulation=False,
@@ -89,16 +95,5 @@ exe = EXE(
     codesign_identity=None,
     entitlements_file=None,
     icon=None,  # Add icon path if available
-    version_file=None,
-)
-
-coll = COLLECT(
-    exe,
-    a.binaries,
-    a.zipfiles,
-    a.datas,
-    strip=False,
-    upx=True,
-    upx_exclude=[],
-    name='Proje_Q',
+    version_file='version_info.txt',
 )

@@ -181,9 +181,6 @@ class PerformanceConstants:
 # ==========================================
 # VERSION INFO
 # ==========================================
-class VersionInfo:
-    """Versiyon bilgileri"""
-    
-    VERSION = "0.5.0"
-    VERSION_DATE = "2026-03-07"
-    APP_NAME = "Proje_Q - JCL Veri Yönetim Sistemi"
+VERSION = "1.0.0"
+VERSION_DATE = "2026-03-08"
+APP_NAME = "Proje_Q - JCL Veri Yönetim Sistemi"

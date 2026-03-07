@@ -59,7 +59,8 @@ class MainWindow(QMainWindow):
     def init_ui(self):
         """Arayüzü oluştur - Modüler"""
         # Pencere ayarları
-        self.setWindowTitle("Proje_Q - JCL Veri Yönetim Sistemi v0.5.0")
+        from config.constants import VERSION
+        self.setWindowTitle(f"Proje_Q - JCL Veri Yönetim Sistemi v{VERSION}")
         self.setGeometry(100, 50, 1800, 900)
         
         # Modüler bileşenleri başlat
