@@ -622,13 +622,23 @@ class MainWindow(QMainWindow):
         return log_group
     
     def update_log_panel(self):
-        """Log panelini güncelle - Dialog ile aynı"""
+        """
+        Log panelini güncelle - Memory-optimized
+        
+        Improvements:
+            - Uses app_logger.get_recent_logs() - memory efficient
+            - QTextDocument.setMaximumBlockCount() prevents memory leak
+            - Only processes last 100 lines
+        """
         try:
-            # Log dosyasını oku (dialog ile aynı yol)
-            log_file = os.path.join("logs", "app.log")
+            from utils.logger import app_logger
+            from config.constants import UIConstants
             
-            if not os.path.exists(log_file):
-                # Log dosyası yoksa bilgi göster
+            # Memory-efficient log okuma
+            lines = app_logger.get_recent_logs(max_lines=UIConstants.LOG_PANEL_MAX_LINES)
+            
+            if not lines:
+                # Log yoksa bilgi göster
                 self.log_text.setHtml(
                     '<div style="font-family: Consolas, monospace; font-size: 12px; color: #FF9800;">'
                     '<p>⚠️ Log dosyası henüz oluşturulmamış</p>'
@@ -637,42 +647,49 @@ class MainWindow(QMainWindow):
                 )
                 return
             
-            # Log dosyasını oku (son 50 satır - en yeni en altta)
-            with open(log_file, 'r', encoding='utf-8') as f:
-                lines = f.readlines()
-                last_lines = lines[-50:] if len(lines) > 50 else lines
-                # Ters çevirme - en eski üstte, en yeni altta (doğal sıra)
-                # last_lines zaten kronolojik sırada gelir
+            # Renklendirme için HTML - memory optimized
+            html_parts = ['<div style="font-family: Consolas, monospace; font-size: 12px;">']
+            
+            for line in lines:
+                line = line.strip()
+                if not line:
+                    continue
                 
-                # Renklendirme için HTML (dialog ile aynı)
-                html_content = '<div style="font-family: Consolas, monospace; font-size: 12px;">'
-                for line in last_lines:  # Sıra değişmedi - en yeni en altta
-                    line = line.strip()
-                    if '[ERROR]' in line:
-                        html_content += f'<p style="color: #ff6b6b; margin: 2px;">{line}</p>'
-                    elif '[WARNING]' in line:
-                        html_content += f'<p style="color: #ffa500; margin: 2px;">{line}</p>'
-                    elif '[INFO]' in line:
-                        html_content += f'<p style="color: #51cf66; margin: 2px;">{line}</p>'
-                    else:
-                        html_content += f'<p style="color: #d4d4d4; margin: 2px;">{line}</p>'
-                html_content += '</div>'
+                # HTML escape
+                line = line.replace('<', '&lt;').replace('>', '&gt;')
                 
-                # Scroll pozisyonunu koru
-                scrollbar = self.log_text.verticalScrollBar()
-                was_at_bottom = scrollbar.value() >= scrollbar.maximum() - 10
-                
-                self.log_text.setHtml(html_content)
-                
-                # En alta scroll et (en yeni loglar en altta)
-                if was_at_bottom:
-                    scrollbar.setValue(scrollbar.maximum())
+                if '[ERROR]' in line or '[CRITICAL]' in line:
+                    html_parts.append(f'<p style="color: #ff6b6b; margin: 2px;">{line}</p>')
+                elif '[WARNING]' in line:
+                    html_parts.append(f'<p style="color: #ffa500; margin: 2px;">{line}</p>')
+                elif '[INFO]' in line:
+                    html_parts.append(f'<p style="color: #51cf66; margin: 2px;">{line}</p>')
+                else:
+                    html_parts.append(f'<p style="color: #d4d4d4; margin: 2px;">{line}</p>')
+            
+            html_parts.append('</div>')
+            html_content = ''.join(html_parts)
+            
+            # Scroll pozisyonunu koru
+            scrollbar = self.log_text.verticalScrollBar()
+            was_at_bottom = scrollbar.value() >= scrollbar.maximum() - 10
+            
+            # HTML'i set et
+            self.log_text.setHtml(html_content)
+            
+            # Memory leak prevention - limit block count
+            self.log_text.document().setMaximumBlockCount(UIConstants.LOG_PANEL_MAX_LINES * 2)
+            
+            # En alta scroll et (en yeni loglar en altta)
+            if was_at_bottom:
+                scrollbar.setValue(scrollbar.maximum())
                     
         except Exception as e:
             # Hata durumunda bilgi göster
+            error_msg = str(e).replace('<', '&lt;').replace('>', '&gt;')
             self.log_text.setHtml(
                 f'<div style="font-family: Consolas; font-size: 12px; color: #f44336;">'
-                f'<p>❌ Log okuma hatası: {str(e)}</p>'
+                f'<p>❌ Log okuma hatası: {error_msg}</p>'
                 '</div>'
             )
     
