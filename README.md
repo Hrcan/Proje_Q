@@ -123,7 +123,7 @@ Proje 2 ana tablo kullanır:
 
 ## 🔄 Versiyonlama
 
-**Mevcut Versiyon:** 0.4.0
+**Mevcut Versiyon:** 1.0.0
 
 Bu proje [Semantic Versioning](https://semver.org/lang/tr/) kullanır: `MAJOR.MINOR.PATCH`
 
@@ -151,6 +151,6 @@ Bu proje özel kullanım içindir.
 ---
 
 **Son Güncelleme:** 07.03.2026  
-**Versiyon:** 0.4.0  
+**Versiyon:** 1.0.0  
 **Durum:** Aktif Geliştirme  
 **Git:** [github.com/Hrcan/Proje_Q](https://github.com/Hrcan/Proje_Q)
